@@ -1,3 +1,5 @@
+//Podcast schema
+
 const mongoose = require("mongoose");
 
 const podcasts = new mongoose.Schema({
