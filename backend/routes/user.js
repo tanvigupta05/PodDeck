@@ -1,4 +1,4 @@
-//user route created
+//building user route
 
 const router = require("express").Router();
 const User = require("../models/user");
@@ -102,6 +102,21 @@ router.get("/checkCookie",async(req,res)=>{
         res.status(200).json({message:true});
     }
     res.status(200).json({message: false});
+});
+
+// route to fetch user details
+router.get("/user-details",authMiddleware, async(req,res)=>{
+   try{
+    const {email} = req.user;
+    const existuingUser = await User.findOne({email:email}).select(
+        "-password"
+    );
+    return res.status(200).json({user:existingUser,});
+   }
+   catch(error){
+    console.log(error);
+    res.status(500).json({error:error});
+   }
 });
 
 module.exports = router;
