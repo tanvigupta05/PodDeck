@@ -15,7 +15,7 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className="px-4 md:px-8 lg:px-12 py-2 relative">
+        <nav className="px-4 md:px-8 lg:px-12 py-3 relative">
             {/* Desktop Navbar */}
             <div className="flex items-center justify-between">
                 {/* Logo Section */}
