@@ -4,9 +4,14 @@ const cookieParser = require("cookie-parser");
 const userApi= require("./routes/user");
 const catApi= require("./routes/category");
 const PodcastApi= require("./routes/podcast");
+const cors = require("cors");
 
 require("dotenv").config();
 require("./connection/conn");
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
