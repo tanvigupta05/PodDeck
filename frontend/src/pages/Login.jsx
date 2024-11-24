@@ -65,7 +65,7 @@ const Login = () => {
                     <button className="bg-green-900 font-semibold text-xl text-white rounded py-2 mt-4" onClick={handleSubmit}>Login</button>
                 </div>
                 <div className="w-full flex flex-col mt-4">
-                    <p className="text-center">Dont't have an account? <Link to="/signup" className="font-semibold hover:text-blue-600">Signup</Link></p>
+                    <p className="text-center">Don't have an account? <Link to="/signup" className="font-semibold hover:text-blue-600">Signup</Link></p>
                 </div> 
             </div>
         </div>
