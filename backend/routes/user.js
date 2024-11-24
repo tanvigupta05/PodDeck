@@ -101,17 +101,17 @@ router.post("/logout",async(req,res)=>{
 //check cookie present or not
 router.get("/checkCookie",async(req,res)=>{
     const token = req.cookies.podDeckUserToken;
-    if(token){
-        res.status(200).json({message:true});
+    if (token) {
+        return res.status(200).json({ message: true }); // Prevent further execution
     }
-    res.status(200).json({message: false});
+    res.status(200).json({ message: false });
 });
 
 // route to fetch user details
 router.get("/user-details",authMiddleware, async(req,res)=>{
    try{
     const {email} = req.user;
-    const existuingUser = await User.findOne({email:email}).select(
+    const existingUser = await User.findOne({email:email}).select(
         "-password"
     );
     return res.status(200).json({user:existingUser,});

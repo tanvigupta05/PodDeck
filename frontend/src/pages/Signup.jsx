@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {ToastContainer,toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import ErrorPage from './ErrorPage.jsx';
 import axios from "axios";
+import { useSelector } from 'react-redux';
 
 const Signup = () => {
+  const isLoggedIn = useSelector((state)=> state.auth.isLoggedIn);
     const navigate = useNavigate();
     const [Values, setValues] = useState({
         username: "",
@@ -28,7 +31,7 @@ const Signup = () => {
         }
     };
   return (
-    <div className="h-screen bg-green-100 flex items-center justify-center">
+    <>{isLoggedIn ? <ErrorPage/> : <div className="h-screen bg-green-100 flex items-center justify-center">
       <ToastContainer
         position="top-center"
         draggable
@@ -92,8 +95,9 @@ const Signup = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>}
+    </>
   );
-}
+};
 
 export default Signup;

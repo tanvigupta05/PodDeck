@@ -3,8 +3,13 @@ import {Link, useNavigate} from "react-router-dom";
 import {ToastContainer,toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {authActions} from "../store/auth";
+import ErrorPage from './ErrorPage.jsx';
 
 const Login = () => {
+    const isLoggedIn = useSelector((state)=> state.auth.isLoggedIn);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [Values, setValues] = useState({
         email: "",
@@ -20,14 +25,15 @@ const Login = () => {
             const res = await axios.post("http://localhost:3000/api/v1/sign-in",
                  Values, {withCredentials: true});
             //toast.success(res.data.message);
-            console.log(res.data);
+            dispatch(authActions.login());
+            //console.log(res.data);
             navigate("/profile");
         } catch (error) {
             toast.error(error.response.data.message);
         }
     };
   return (
-    <div className="h-screen bg-green-100 flex items-center justify-center">
+    <>{isLoggedIn ? <ErrorPage/> : <div className="h-screen bg-green-100 flex items-center justify-center">
         <div className="w-4/6 md:w-3/6 lg:w-2/6 flex flex-col items-center justify-center">
             <Link to="/" className="text-2xl font-bold">PodDeck</Link>
             <div className="mt-6 w-full items-center">
@@ -64,7 +70,9 @@ const Login = () => {
             </div>
         </div>
     </div>
-  )
 }
+    </>
+    );
+};
 
 export default Login
