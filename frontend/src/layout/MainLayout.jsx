@@ -10,7 +10,7 @@ const MainLayout = () => {
         <main>
           <Outlet />
         </main>
-        <div className="fixed bottom-0 left-0 w-full">
+        <div className="w-full">
           <AudioPlayer/>
         </div>
     </div>
