@@ -177,6 +177,7 @@ const InputPodcast = () => {
                     <option value="Education">Education</option>
                     <option value="Hobbies">Hobbies</option>
                     <option value="Government">Government</option>
+                    <option value="Historic">Historic</option>
                 </select>
             </div>
           </div>

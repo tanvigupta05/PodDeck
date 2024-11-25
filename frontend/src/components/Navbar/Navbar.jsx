@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
+import PodStar from "../../assets/podStar.png";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -25,19 +26,19 @@ const Navbar = () => {
   const closeMobileNav = () => setMobileNav(false);
 
   return (
-    <nav className="px-4 md:px-8 lg:px-12 py-2 relative z-[1]">
-      <div className="flex items-center justify-between">
-        <div className="logo brand-name w-2/6 flex items-center gap-4">
+    <nav className="px-4 md:px-8 bg-zinc-700 lg:px-12 py-2 relative z-[1]">
+      <div className="flex items-center text-white justify-between">
+        <div className="logo brand-name w-2/6 flex items-center gap-2">
           <img
-            src="https://cdn-icons-png.flaticon.com/128/9043/9043096.png"
-            alt="podcaster"
-            className="h-12"
+            src= {PodStar}
+            alt="PodStar"
+            className="h-12 transition-transform duration-100 hover:scale-110"
           />
-          <Link to="/" className="text-2xl font-bold">
-            PodStar
+          <Link to="/" className="text-3xl font-bold">
+          PodStar
           </Link>
         </div>
-        <div className="hidden w-2/6 lg:flex items-center justify-center">
+        <div className="hidden w-2/6 lg:flex items-center justify-center text-xl">
           {navLinks.map((items, i) => (
             <Link
               key={i}
@@ -54,13 +55,13 @@ const Navbar = () => {
               {" "}
               <Link
                 to="/login"
-                className="px-6 py-3 border border-black rounded-full"
+                className="px-6 py-3 border bg-white text-black border border-black font-semibold rounded-full"
               >
                 Login
               </Link>
               <Link
                 to="/signup"
-                className="ms-4 px-6 py-3 bg-black text-white rounded-full"
+                className="ms-4 px-6 py-3 bg-black text-black bg-white border border-black font-semibold rounded-full"
               >
                 Signup
               </Link>
@@ -89,7 +90,7 @@ const Navbar = () => {
 
       {/* Mobile Nav  */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-blue-100 lg:hidden  ${
+        className={`fixed top-0 left-0 w-full h-screen bg-blue-100 lg:hidden ${
           MobileNav ? "translate-y-0" : "translate-y-[-100%] hidden"
         } transition-transform duration-500 ease-in-out `}
       >
