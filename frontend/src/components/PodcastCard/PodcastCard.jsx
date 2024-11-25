@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { playerActions } from "../../store/player";
 const PodcastCard = ({ items }) => {
-  const disaptch = useDispatch();
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const handlePlay = (e) => {
     if (isLoggedIn) {
       e.preventDefault();
-      disaptch(playerActions.setDiv());
-      disaptch(
+      dispatch(playerActions.setDiv());
+      dispatch(
         playerActions.changeImage(`http://localhost:3000/${items.frontImage}`)
       );
-      disaptch(
+      dispatch(
         playerActions.changeSong(`http://localhost:3000/${items.audioFile}`)
       );
     }

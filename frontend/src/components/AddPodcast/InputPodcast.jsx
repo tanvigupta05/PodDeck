@@ -97,7 +97,7 @@ const InputPodcast = () => {
             style={{ border: "1px dashed black" }}
 
             onDragEnter= {handleDragEnter}
-            onDragLeave= {handleDragOver}
+            onDragLeave= {handleDragLeave}
             onDragOver={handleDragOver}
             onDrop= {handleDropImage}
           >
@@ -178,7 +178,6 @@ const InputPodcast = () => {
                     <option value="Hobbies">Hobbies</option>
                     <option value="Government">Government</option>
                 </select>
-              
             </div>
           </div>
 
