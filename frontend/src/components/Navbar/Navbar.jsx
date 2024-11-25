@@ -34,7 +34,7 @@ const Navbar = () => {
             className="h-12"
           />
           <Link to="/" className="text-2xl font-bold">
-            Podcaster
+            PodStar
           </Link>
         </div>
         <div className="hidden w-2/6 lg:flex items-center justify-center">
