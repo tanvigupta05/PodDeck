@@ -20,10 +20,30 @@ const Header = () => {
   }, []);
   
   const LogoutHandler = async () => {
-    const res = await axios.post("http://localhost:3000/api/v1/logout", { withCredentials: true });
-    console.log(res);
-    dispatch(authActions.logout());
-    navigate("/");
+    try {
+      // Include withCredentials to send cookies with the request
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/logout", 
+        {}, // Empty object as no data is being sent
+        { 
+          withCredentials: true, 
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      // Dispatch logout action to clear Redux store
+      dispatch(authActions.logout());
+      // Clear any additional local storage if needed
+      localStorage.removeItem('user'); // Optional, if you store user info in localStorage
+      // Navigate to home/login page
+      navigate("/");
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Optional: Add error handling 
+      // You might want to show a toast or alert to the user
+    }
   };
   
   return (

@@ -91,12 +91,22 @@ router.post("/sign-in",async(req,res)=>{
 });
 
 // logout
-router.post("/logout",async(req,res)=>{
-    res.clearCookie("podDeckUserToken", {
+router.post("/logout", async (req, res) => {
+    try {
+      // Clear the cookie
+      res.clearCookie("podDeckUserToken", {
         httpOnly: true,
-    });
-    res.json({message: "logged out"});
-});
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict' // or 'lax' depending on your setup
+      });
+  
+      // Optional: Invalidate token on server-side if you're using a token blacklist
+      
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Logout failed" });
+    }
+  });
 
 //check cookie present or not
 router.get("/checkCookie",async(req,res)=>{

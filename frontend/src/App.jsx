@@ -22,6 +22,7 @@ const App = () => {
     const fetch = async()=> {
     try {
         const res= await axios.get("http://localhost:3000/api/v1/checkCookie", {withCredentials:true});
+        //console.log(res.data.message);
         if(res.data.message){
           dispatch(authActions.login());
         };
