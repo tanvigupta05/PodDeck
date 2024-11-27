@@ -1,2 +1,2 @@
-# PodDeck
-MERN stack project
+# PodStar
+MERN stack project for Podcast streaming 
