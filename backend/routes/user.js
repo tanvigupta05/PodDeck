@@ -31,7 +31,6 @@ router.post("/sign-up",async(req,res)=>{
         // hash the password
         const salt= await bcrypt.genSalt(10);
         const hashedPass= await bcrypt.hash(password,salt);
-
         const newUser= new User({username,email,password: hashedPass});
         await newUser.save();
         return res.status(200).json({message:"Account created"});
@@ -49,7 +48,6 @@ router.post("/sign-in",async(req,res)=>{
         if(!email || !password){
             return res.status(400).json({message:"all fields are required"});
         }
-
         // check user exists
         const existingUser = await User.findOne({email:email});
         
@@ -62,21 +60,18 @@ router.post("/sign-in",async(req,res)=>{
         if(!isMatch){
             return res.status(400).json({message:"invalid credentials"});
         }
-
         //generate JWT token
          const token= jwt.sign(
             {id: existingUser._id, email: existingUser.email},
             process.env.JWT_SECRET,
             {expiresIn: "30d"}
         );
-
         res.cookie("podDeckUserToken", token, {
             httpOnly: true,
             maxAge: 30*24*60*100, //30 days
             secure: process.env.NODE_ENV === "production",
             sameSite: "None",
         });
-
         return res.status(200).json({
             id: existingUser._id,
             username: existingUser.username,
@@ -97,16 +92,14 @@ router.post("/logout", async (req, res) => {
       res.clearCookie("podDeckUserToken", {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict' // or 'lax' depending on your setup
+        sameSite: 'strict' 
       });
-  
       // Optional: Invalidate token on server-side if you're using a token blacklist
-      
       res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
       res.status(500).json({ message: "Logout failed" });
     }
-  });
+});
 
 //check cookie present or not
 router.get("/checkCookie",async(req,res)=>{

@@ -50,12 +50,12 @@ const Header = () => {
     <>
       {UserData && (
         <div className="bg-zinc-800 text-zinc-50 rounded py-8 flex flex-col md:flex-row items-center justify-between px-4 lg:px-12">
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col items-center font-semibold md:items-start">
             <p className="text-zinc-400">Profile</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl text-zinc-100 font-bold text-center">
               {UserData.username}
             </h1>
-            <p className="text-zinc-400 mt-1">{UserData.email}</p>
+            <p className="text-zinc-400 mt-1"><u>{UserData.email}</u></p>
           </div>
           <div>
             <button

@@ -105,4 +105,44 @@ router.get("/category/:cat", async (req, res) => {
   }
 });
 
+//delete podcast 
+router.delete("/delete-podcast/:id", async (req, res) => {
+  try {
+    const podcastId = req.params.id;
+    await Podcast.findByIdAndDelete(podcastId);
+    res.status(200).json({ message: "Podcast deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete podcast" });
+  }
+});
+
+// Backend route to update a podcast
+router.put("/update-podcast/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, category } = req.body;
+
+    const updatedPodcast = await Podcast.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        category: category._id || category, // Handle category ID or object
+      },
+      { new: true }
+    );
+
+    if (!updatedPodcast) {
+      return res.status(404).json({ message: "Podcast not found" });
+    }
+
+    res.status(200).json({
+      message: "Podcast updated successfully",
+      data: updatedPodcast,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update podcast", error });
+  }
+});
+
 module.exports = router;

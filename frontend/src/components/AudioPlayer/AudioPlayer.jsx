@@ -83,7 +83,7 @@ const AudioPlayer = () => {
     <div
       className={`${
         PlayerDivState ? "fixed" : "hidden"
-      } bottom-0 left-0 w-[100%] bg-zinc-900 text-zinc-300 p-4 rounded flex items-center gap-4 `}
+      } bottom-0 left-0 w-[100%] bg-zinc-800 text-zinc-300 p-4 rounded flex items-center gap-4 `}
     >
       <div className="hidden md:block w-1/3">
         <img src={img} alt="" className={`size-12 rounded-full object-cover`} />
