@@ -85,13 +85,13 @@ const YourPodcast = () => {
             <div className="flex gap-2 mt-2 justify-between items-center border-t border-zinc-600 pt-2">
               <button
                 onClick={() => handleEdit(items)}
-                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-all text-sm"
+                className="bg-zinc-700 text-white px-2 py-1 rounded hover:text-semibold transition-all text-sm"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(items._id)}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-all text-sm"
+                className="bg-zinc-700 text-red-600 font-semibold px-2 py-1 rounded hover: text-white transition-all text-sm"
                 disabled={isLoading}
               >
                 Delete

@@ -101,7 +101,7 @@ const Signup = () => {
             <div className="mt-6">
               <button
                 onClick={handleSubmit}
-                className="w-full px-4 py-2 bg-green-700 hover:bg-green-800 text-white font-semibold text-lg rounded-lg shadow-md transition-transform transform hover:scale-105"
+                className="w-full px-4 py-2 bg-zinc-500 hover:bg-green-800 text-white font-semibold text-lg rounded-lg shadow-md transition-transform transform hover:scale-105"
               >
                 Signup
               </button>
@@ -112,7 +112,7 @@ const Signup = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-green-400 hover:text-green-500 font-medium"
+                  className="text-blue-700 hover:text-green-500 font-medium"
                 >
                   Login
                 </Link>
