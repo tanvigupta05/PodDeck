@@ -13,7 +13,7 @@ const EditModal = ({ podcast, onClose, onSave }) => {
       ...podcast,
       title,
       description,
-      category,
+      category: { ...podcast.category, categoryName: category },
     };
     onSave(updatedData); // Save changes
     onClose(); // Close modal
@@ -58,6 +58,7 @@ const EditModal = ({ podcast, onClose, onSave }) => {
               <option value="Hobbies">Hobbies</option>
               <option value="Government">Government</option>
               <option value="Historic">Historic</option>
+              <option value="Others">Others</option>
             </select>
           </div>
           <div className="flex justify-end gap-4">

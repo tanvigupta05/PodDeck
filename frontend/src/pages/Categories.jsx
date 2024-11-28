@@ -5,6 +5,8 @@ import businessImg from "../assets/business.jpg";
 import educationImg from "../assets/education.png";
 import hobbiesImg from "../assets/hobbies.png";
 import governmentImg from "../assets/government.jpg";
+import otherImg from "../assets/others.jpg";
+import historyImg from "../assets/history.png";
 import { motion } from "framer-motion";
 
 const Categories = () => {
@@ -43,7 +45,13 @@ const Categories = () => {
       name: "Historic",
       color: "bg-zinc-600",  
       to: "/categories/Historic",
-      img: governmentImg,
+      img: historyImg,
+    },
+    {
+      name: "Others",
+      color: "bg-zinc-600",  
+      to: "/categories/Others",
+      img: otherImg,
     },
   ];
 
