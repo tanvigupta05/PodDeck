@@ -73,6 +73,12 @@ const YourPodcast = () => {
         >
           Add Podcast
         </Link>
+        <Link
+          to="/favorites"
+          className="px-4 py-2 bg-zinc-800 text-zinc-50 rounded font-semibold hover:bg-zinc-700 transition-all duration-300"
+        >
+          Favorites
+        </Link>
       </div>
       <div className="my-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {Podcasts.map((items, i) => (
@@ -85,13 +91,13 @@ const YourPodcast = () => {
             <div className="flex gap-2 mt-2 justify-between items-center border-t border-zinc-600 pt-2">
               <button
                 onClick={() => handleEdit(items)}
-                className="bg-zinc-700 text-white px-2 py-1 rounded hover:text-semibold transition-all text-sm"
+                className="bg-zinc-700 text-white font-semibold px-2 py-1 rounded"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(items._id)}
-                className="bg-zinc-700 text-red-600 font-semibold px-2 py-1 rounded hover: text-white transition-all text-sm"
+                className="bg-red-700 text-white-600 font-semibold px-2 py-1 rounded"
                 disabled={isLoading}
               >
                 Delete

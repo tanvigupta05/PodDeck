@@ -125,4 +125,61 @@ router.get("/user-details",authMiddleware, async(req,res)=>{
    }
 });
 
+// Add to favorites
+router.post("/add-to-favorites/:id", authMiddleware, async (req, res) => {
+    try {
+        const podcastId = req.params.id;
+        const user = req.user;
+
+        // Check if already in favorites
+        if (user.favourites.includes(podcastId)) {
+            return res.status(400).json({ message: "Podcast already in favorites" });
+        }
+
+        user.favourites.push(podcastId);
+        await user.save();
+
+        res.status(200).json({ message: "Added to favorites" });
+    } catch (error) {
+        console.error("Failed to add to favorites:", error);
+        res.status(500).json({ message: "Failed to add to favorites" });
+    }
+});
+
+// Remove from favorites
+router.delete("/remove-from-favorites/:id", authMiddleware, async (req, res) => {
+    try {
+        const podcastId = req.params.id;
+        const user = req.user;
+
+        user.favourites = user.favourites.filter(
+            (id) => id.toString() !== podcastId
+        );
+        await user.save();
+
+        res.status(200).json({ message: "Removed from favorites" });
+    } catch (error) {
+        console.error("Failed to remove from favorites:", error);
+        res.status(500).json({ message: "Failed to remove from favorites" });
+    }
+});
+
+// Get favorite podcasts
+router.get("/favorites", authMiddleware, async (req, res) => {
+    try {
+        const user = req.user;
+
+        const favoritePodcasts = await User.findById(user._id)
+            .populate({
+                path: "favourites",
+                populate: { path: "category" },
+            })
+            .select("favourites -_id");
+
+        res.status(200).json({ data: favoritePodcasts.favourites });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch favorites" });
+    }
+});
+
 module.exports = router;

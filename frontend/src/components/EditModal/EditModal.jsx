@@ -13,7 +13,7 @@ const EditModal = ({ podcast, onClose, onSave }) => {
       ...podcast,
       title,
       description,
-      category: { ...podcast.category, categoryName: category },
+      category,
     };
     onSave(updatedData); // Save changes
     onClose(); // Close modal

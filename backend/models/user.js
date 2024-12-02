@@ -1,30 +1,37 @@
-// User schema
-
-const mongoose = require("mongoose");
+const mongoose=require('mongoose');
 
 const user = new mongoose.Schema({
+    
     username:{
-        type: String,
-        unique: true,
-        required: true,
+        type:String,
+        unique:true,
+        required:true,
     },
     email:{
-        type: String,
-        unique: true,
-        required: true,
+        type:String,
+        unique:true,
+        required:true,
     },
     password:{
-        type: String,
-        unique: true,
-        required: true,
+        type:String,
+        unique:true,
+        required:true,
     },
+    /* one user will create multiple podcasts */
     podcasts:[
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "podcasts"  // variable name given to podcast schema
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"podcasts",
         },
     ],
+     favourites:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"podcasts",
+        },
+    ],  
 },
-{timestamps:true});
+{timestamps:true}
+);
 
-module.exports = mongoose.model("user",user);
+module.exports= mongoose.model('user',user);
