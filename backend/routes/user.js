@@ -138,7 +138,6 @@ router.post("/add-to-favorites/:id", authMiddleware, async (req, res) => {
 
         user.favourites.push(podcastId);
         await user.save();
-
         res.status(200).json({ message: "Added to favorites" });
     } catch (error) {
         console.error("Failed to add to favorites:", error);

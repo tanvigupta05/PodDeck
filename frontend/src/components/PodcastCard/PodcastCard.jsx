@@ -4,22 +4,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { playerActions } from "../../store/player";
 import axios from "axios";
+import { toast , ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; //Import Toastify CSS
 
 const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
+
+  console.log("running podcast card")
   const [editModalOpen, setEditModalOpen] = useState(false); // State to toggle EditModal
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const handleFavorite = async () => {
+    console.log("added");
     try {
-      await axios.post(
+      const res = await axios.post(
         `http://localhost:3000/api/v1/add-to-favorites/${items._id}`,
         {},
-        { withCredentials: true }
+        {withCredentials: true }
       );
-      alert("Added to favorites");
+      
+        alert("Podcast added to favorites");
     } catch (error) {
-      alert("Failed to add to favorites");
+      console.log("first",error?.response?.data)
+      toast.error("failed to add");
     }
   };
 
@@ -43,7 +50,7 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
         updatedPodcast,
         { withCredentials: true }
       );
-      alert("Podcast updated successfully");
+      toast.success("Podcast updated successfully");
       window.location.reload(); // Reload to reflect updated data
     } catch (error) {
       alert("Failed to update podcast");
@@ -51,7 +58,7 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
   };
 
   return (
-    <div className="border p-4 bg-zinc-800 rounded flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300">
+    <div className="border p-4 bg-zinc-800 rounded flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 z-2">
       <Link
         to={`/description/${items._id}`}
         className="flex flex-col items-center"
@@ -81,10 +88,11 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
           </div>
           {/* Add to Favorites Button */}
           <div>
+    
             {!isFavorite && (
               <button
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300"
-                onClick={handleFavorite}
+                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300 z-10"
+                onClick={()=>{handleFavorite()}}
               >
                 Add to Favorites
               </button>
