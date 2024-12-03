@@ -97,7 +97,7 @@ const YourPodcast = () => {
               </button>
               <button
                 onClick={() => handleDelete(items._id)}
-                className="bg-red-700 text-white-600 font-semibold px-2 py-1 rounded"
+                className="bg-red-600 text-white-600 font-semibold px-2 py-1 rounded"
                 disabled={isLoading}
               >
                 Delete

@@ -122,20 +122,22 @@ router.put("/update-podcast/:id", async (req, res) => {
     const { id } = req.params;
     const { title, description, category } = req.body;
 
+    // Find the category document by category name
     const categoryDocument = await Category.findOne({ categoryName: category });
     if (!categoryDocument) {
       return res.status(404).json({ message: "Category not found" });
     }
+
+    // Update the podcast with the new category ID
     const updatedPodcast = await Podcast.findByIdAndUpdate(
       id,
       {
         title,
         description,
-        category: category._id || category, // Handle category ID or object
-        category: categoryDocument._id, // Use the category's ID
+        category: categoryDocument._id, // Use the category's ID here
       },
       { new: true }
-    );
+    ).populate("category"); // Populate the category if needed
 
     if (!updatedPodcast) {
       return res.status(404).json({ message: "Podcast not found" });

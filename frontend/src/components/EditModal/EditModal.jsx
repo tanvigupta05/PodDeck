@@ -9,23 +9,30 @@ const EditModal = ({ podcast, onClose, onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Prepare updated data
     const updatedData = {
       ...podcast,
       title,
       description,
       category,
     };
-    onSave(updatedData); // Save changes
-    onClose(); // Close modal
+
+    // Call onSave function passed via props
+    onSave(updatedData);
+    onClose(); // Close the modal after saving changes
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="p-6 rounded w-full max-w-lg bg-zinc-700">
-        <h2 className="text-lg font-bold mb-4">Edit Podcast</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="p-6 rounded w-full max-w-lg bg-zinc-700 shadow-lg">
+        <h2 className="text-lg font-bold mb-4 text-white">Edit Podcast</h2>
         <form onSubmit={handleSubmit}>
+          {/* Title Field */}
           <div className="mb-4">
-            <label className="block text-sm font-bold mb-2">Title</label>
+            <label className="block text-sm font-bold mb-2 text-gray-300">
+              Title
+            </label>
             <input
               type="text"
               className="w-full p-2 border rounded text-black"
@@ -34,8 +41,12 @@ const EditModal = ({ podcast, onClose, onSave }) => {
               required
             />
           </div>
+
+          {/* Description Field */}
           <div className="mb-4">
-            <label className="block text-sm font-bold mb-2">Description</label>
+            <label className="block text-sm font-bold mb-2 text-gray-300">
+              Description
+            </label>
             <textarea
               className="w-full p-2 border rounded text-black"
               value={description}
@@ -43,8 +54,12 @@ const EditModal = ({ podcast, onClose, onSave }) => {
               required
             ></textarea>
           </div>
+
+          {/* Category Field */}
           <div className="mb-4">
-            <label className="block text-sm font-bold mb-2">Category</label>
+            <label className="block text-sm font-bold mb-2 text-gray-300">
+              Category
+            </label>
             <select
               className="w-full p-2 border rounded text-black"
               value={category}
@@ -61,17 +76,19 @@ const EditModal = ({ podcast, onClose, onSave }) => {
               <option value="Others">Others</option>
             </select>
           </div>
+
+          {/* Action Buttons */}
           <div className="flex justify-end gap-4">
             <button
               type="button"
-              className="px-4 py-2 bg-zinc-900 rounded hover:bg-gray-400 text-white"
+              className="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500 text-white"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-zinc-900 text-white rounded hover:bg-gray-600"
+              className="px-4 py-2 bg-green-600 rounded hover:bg-green-500 text-white"
             >
               Save
             </button>

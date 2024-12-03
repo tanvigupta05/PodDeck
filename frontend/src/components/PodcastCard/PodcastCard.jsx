@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import EditModal from "../EditModal/EditModal"; // Import EditModal
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { playerActions } from "../../store/player";
 import axios from "axios";
-import { FaHeart } from "react-icons/fa";
 
-const PodcastCard = ({ items, handleRemove, isFavorite }) => {
+const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
+  const [editModalOpen, setEditModalOpen] = useState(false); // State to toggle EditModal
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
@@ -35,6 +36,20 @@ const PodcastCard = ({ items, handleRemove, isFavorite }) => {
     }
   };
 
+  const handleUpdate = async (updatedPodcast) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:3000/api/v1/update-podcast/${updatedPodcast._id}`,
+        updatedPodcast,
+        { withCredentials: true }
+      );
+      alert("Podcast updated successfully");
+      window.location.reload(); // Reload to reflect updated data
+    } catch (error) {
+      alert("Failed to update podcast");
+    }
+  };
+
   return (
     <div className="border p-4 bg-zinc-800 rounded flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300">
       <Link
@@ -58,23 +73,23 @@ const PodcastCard = ({ items, handleRemove, isFavorite }) => {
 
         {/* Category and Add to Favorites Section */}
         <div>
-        <div className="mt-2 px-4 py-2 flex justify-between items-center">
-          {/* Category Name */}
-          <span className="text-sm font-medium">
-            <h3>Genre: {items.category.categoryName}</h3>
-          </span>
-        </div>
-        {/* Add to Favorites Button */}
-        <div>
-          {!isFavorite && (
-            <button
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300"
-            onClick={handleFavorite}
-          >
-            Add to Favorites
-          </button>
-          )}
-        </div>
+          <div className="mt-2 px-4 py-2 flex justify-between items-center">
+            {/* Category Name */}
+            <span className="text-sm font-medium">
+              <h3>Genre: {items.category.categoryName}</h3>
+            </span>
+          </div>
+          {/* Add to Favorites Button */}
+          <div>
+            {!isFavorite && (
+              <button
+                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300"
+                onClick={handleFavorite}
+              >
+                Add to Favorites
+              </button>
+            )}
+          </div>
         </div>
       </Link>
 
@@ -97,6 +112,25 @@ const PodcastCard = ({ items, handleRemove, isFavorite }) => {
         >
           Remove from Favorites
         </button>
+      )}
+
+      {/* Admin Edit Button */}
+      {isAdmin && (
+        <button
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full w-full hover:bg-blue-600 transition-all duration-300"
+          onClick={() => setEditModalOpen(true)}
+        >
+          Edit Podcast
+        </button>
+      )}
+
+      {/* Render EditModal if Open */}
+      {editModalOpen && (
+        <EditModal
+          podcast={items}
+          onClose={() => setEditModalOpen(false)}
+          onSave={handleUpdate}
+        />
       )}
     </div>
   );
