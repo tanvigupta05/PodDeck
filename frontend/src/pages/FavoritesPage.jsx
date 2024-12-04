@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PodcastCard from "../components/PodcastCard/PodcastCard";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the Toastify CSS
+import { toast } from "react-toastify";
 
 const FavoritesPage = () => {
   const [favorites, setFavorites] = useState([]);
 
-  // Fetching favorite podcasts
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
@@ -17,30 +15,28 @@ const FavoritesPage = () => {
         setFavorites(res.data.data);
       } catch (error) {
         console.error("Error fetching favorites:", error);
-        toast.error("Failed to load favorites");
+        toast.error("Failed to load favorites.");
       }
     };
     fetchFavorites();
   }, []);
 
-  // Remove from favorites handler
   const handleRemove = async (podcastId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/v1/remove-from-favorites/${podcastId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `http://localhost:3000/api/v1/remove-from-favorites/${podcastId}`,
+        { withCredentials: true }
+      );
       setFavorites(favorites.filter((podcast) => podcast._id !== podcastId));
-      toast.success("Podcast removed successfully");
+      toast.success("Podcast removed from favorites.");
     } catch (error) {
       console.error("Error removing from favorites:", error);
-      toast.error("Failed to remove podcast");
+      toast.error("Failed to remove podcast from favorites.");
     }
   };
 
   return (
     <div className="bg-zinc-900 min-h-screen text-zinc-50 px-4 lg:px-12 py-6">
-      {/* ToastContainer must be rendered */}
-      <ToastContainer />
       <h1 className="text-3xl font-bold mb-6">Your Favorites</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {favorites.length > 0 ? (

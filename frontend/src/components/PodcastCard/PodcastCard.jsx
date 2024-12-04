@@ -1,32 +1,30 @@
 import React, { useState } from "react";
-import EditModal from "../EditModal/EditModal"; // Import EditModal
+import EditModal from "../EditModal/EditModal";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { playerActions } from "../../store/player";
 import axios from "axios";
-import { toast , ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; //Import Toastify CSS
+import { toast } from "react-toastify";
 
 const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
-
-  console.log("running podcast card")
-  const [editModalOpen, setEditModalOpen] = useState(false); // State to toggle EditModal
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const handleFavorite = async () => {
-    console.log("added");
     try {
       const res = await axios.post(
         `http://localhost:3000/api/v1/add-to-favorites/${items._id}`,
         {},
-        {withCredentials: true }
+        { withCredentials: true }
       );
-      
-        alert("Podcast added to favorites");
+      toast.success("Podcast added to favorites!");
     } catch (error) {
-      console.log("first",error?.response?.data)
-      toast.error("failed to add");
+      if (error.response?.data?.message === "Podcast already in favorites") {
+        toast.info("Podcast is already in your favorites.");
+      } else {
+        toast.error("Failed to add to favorites.");
+      }
     }
   };
 
@@ -45,15 +43,15 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
 
   const handleUpdate = async (updatedPodcast) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `http://localhost:3000/api/v1/update-podcast/${updatedPodcast._id}`,
         updatedPodcast,
         { withCredentials: true }
       );
-      toast.success("Podcast updated successfully");
-      window.location.reload(); // Reload to reflect updated data
+      toast.success("Podcast updated successfully.");
+      window.location.reload();
     } catch (error) {
-      alert("Failed to update podcast");
+      toast.error("Failed to update podcast.");
     }
   };
 
@@ -63,45 +61,31 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
         to={`/description/${items._id}`}
         className="flex flex-col items-center"
       >
-        {/* Podcast Image */}
         <img
           src={`http://localhost:3000/${items.frontImage}`}
           alt={items.title}
           className="rounded w-full h-40 object-cover"
         />
-
-        {/* Podcast Title */}
         <h3 className="text-xl font-bold mt-2">{items.title.slice(0, 20)}</h3>
-
-        {/* Podcast Description */}
-        <p className="mt-2 text-slate-500 text-sm">
-          {items.description.slice(0, 50)}...
-        </p>
-
-        {/* Category and Add to Favorites Section */}
-        <div>
-          <div className="mt-2 px-4 py-2 flex justify-between items-center">
-            {/* Category Name */}
-            <span className="text-sm font-medium">
-              <h3>Genre: {items.category.categoryName}</h3>
-            </span>
-          </div>
-          {/* Add to Favorites Button */}
-          <div>
-    
-            {!isFavorite && (
-              <button
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300 z-10"
-                onClick={()=>{handleFavorite()}}
-              >
-                Add to Favorites
-              </button>
-            )}
-          </div>
-        </div>
       </Link>
-
-      {/* Play Now Button */}
+      <p className="mt-2 text-slate-500 text-sm">
+        {items.description.slice(0, 50)}...
+      </p>
+      <div>
+        <div className="mt-2 px-4 py-2 flex justify-between items-center">
+          <span className="text-sm font-medium">
+            <h3>Genre: {items.category.categoryName}</h3>
+          </span>
+        </div>
+        {!isFavorite && (
+          <button
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300 z-10"
+            onClick={handleFavorite}
+          >
+            Add to Favorites
+          </button>
+        )}
+      </div>
       <div className="mt-2">
         <Link
           to={isLoggedIn ? "#" : "/signup"}
@@ -111,8 +95,6 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
           Play Now
         </Link>
       </div>
-
-      {/* Remove from Favorites Button */}
       {isFavorite && (
         <button
           className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300"
@@ -121,8 +103,6 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
           Remove from Favorites
         </button>
       )}
-
-      {/* Admin Edit Button */}
       {isAdmin && (
         <button
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-full w-full hover:bg-blue-600 transition-all duration-300"
@@ -131,8 +111,6 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
           Edit Podcast
         </button>
       )}
-
-      {/* Render EditModal if Open */}
       {editModalOpen && (
         <EditModal
           podcast={items}
