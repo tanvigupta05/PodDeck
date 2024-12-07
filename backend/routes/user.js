@@ -1,10 +1,52 @@
 //building user route
-
 const router = require("express").Router();
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const authMiddleware = require("../middleware/authMiddleware");
+const {authMiddleware, adminMiddleware} = require("../middleware/authMiddleware");
+
+// Fetch all users (Admin only)
+router.get("/all-users", authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+      const users = await User.find().select("-password");
+      res.status(200).json({ data: users });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users", error });
+    }
+  });
+
+// Update user (Admin only)
+router.put("/update-user/:id", authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { username, email, isAdmin } = req.body;
+  
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { username, email, isAdmin },
+        { new: true }
+      ).select("-password");
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      res.status(200).json({ message: "User updated successfully", data: updatedUser });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update user", error });
+    }
+  });
+  
+  // Delete user (Admin only)
+  router.delete("/delete-user/:id", authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await User.findByIdAndDelete(id);
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete user", error });
+    }
+  });  
 
 //signup route
 router.post("/sign-up",async(req,res)=>{

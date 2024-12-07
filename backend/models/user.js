@@ -30,6 +30,10 @@ const user = new mongoose.Schema({
             ref:"podcasts",
         },
     ],  
+    isAdmin: {
+        type: Boolean,
+        default: false, // Regular users will have `isAdmin` as false by default
+      },
 },
 {timestamps:true}
 );

@@ -1,9 +1,80 @@
-const authMiddleware = require("../middleware/authMiddleware");
+const {authMiddleware, adminMiddleware} = require("../middleware/authMiddleware");
 const upload = require("../middleware/multer");
 const Category = require("../models/category");
 const User = require("../models/user");
 const Podcast = require("../models/podcast");
 const router = require("express").Router();
+
+// Admin: Fetch all podcasts (with user details)
+router.get("/all-podcasts", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const podcasts = await Podcast.find()
+      .populate("category")
+      .populate("user", "username email -_id")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ data: podcasts });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch podcasts", error });
+  }
+});
+
+// Admin: Delete any podcast
+router.delete("/admin-delete-podcast/:id", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const podcastId = req.params.id;
+
+    const podcast = await Podcast.findById(podcastId);
+    if (!podcast) {
+      return res.status(404).json({ message: "Podcast not found" });
+    }
+
+    // Remove references from related models
+    await User.findByIdAndUpdate(podcast.user, { $pull: { podcasts: podcastId } });
+    await Category.findByIdAndUpdate(podcast.category, { $pull: { podcasts: podcastId } });
+    await Podcast.findByIdAndDelete(podcastId);
+
+    res.status(200).json({ message: "Podcast deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete podcast", error });
+  }
+});
+
+// Admin: Handle reported podcasts (Mark as reviewed or delete)
+router.post("/review-reported-podcast/:id", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { action } = req.body; // action: "markReviewed" or "delete"
+
+    if (action === "markReviewed") {
+      const podcast = await Podcast.findByIdAndUpdate(
+        id,
+        { isReviewed: true },
+        { new: true }
+      );
+      if (!podcast) {
+        return res.status(404).json({ message: "Podcast not found" });
+      }
+      return res.status(200).json({ message: "Podcast marked as reviewed" });
+    } else if (action === "delete") {
+      const podcast = await Podcast.findById(id);
+      if (!podcast) {
+        return res.status(404).json({ message: "Podcast not found" });
+      }
+
+      // Remove references
+      await User.findByIdAndUpdate(podcast.user, { $pull: { podcasts: id } });
+      await Category.findByIdAndUpdate(podcast.category, { $pull: { podcasts: id } });
+      await Podcast.findByIdAndDelete(id);
+
+      return res.status(200).json({ message: "Podcast deleted successfully" });
+    } else {
+      return res.status(400).json({ message: "Invalid action" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to review reported podcast", error });
+  }
+});
 
 //add-podcast
 router.post("/add-podcast", authMiddleware, upload, async (req, res) => {
