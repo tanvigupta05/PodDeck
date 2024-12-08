@@ -41,7 +41,7 @@ const Header = () => {
       navigate("/");
     } catch (error) {
       console.error('Logout failed:', error);
-      // Optional: Add error handling 
+      // Optional: Add error handling
       // You might want to show a toast or alert to the user
     }
   };

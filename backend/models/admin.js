@@ -22,6 +22,10 @@ const adminSchema = new mongoose.Schema(
       type: String,
       default: 'admin', // Fixed role for admin
     },
+    isAdmin: {
+     type: Boolean, 
+     default: true 
+    },
   },
   { timestamps: true }
 );

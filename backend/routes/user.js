@@ -37,7 +37,7 @@ router.put("/update-user/:id", authMiddleware, adminMiddleware, async (req, res)
     }
   });
   
-  // Delete user (Admin only)
+// Delete user (Admin only)
   router.delete("/delete-user/:id", authMiddleware, adminMiddleware, async (req, res) => {
     try {
       const { id } = req.params;
@@ -46,7 +46,7 @@ router.put("/update-user/:id", authMiddleware, adminMiddleware, async (req, res)
     } catch (error) {
       res.status(500).json({ message: "Failed to delete user", error });
     }
-  });  
+  }); 
 
 //signup route
 router.post("/sign-up",async(req,res)=>{
@@ -144,13 +144,28 @@ router.post("/logout", async (req, res) => {
 });
 
 //check cookie present or not
-router.get("/checkCookie",async(req,res)=>{
-    const token = req.cookies.podDeckUserToken;
-    if (token) {
-        return res.status(200).json({ message: true }); // Prevent further execution
+router.get("/checkCookie", async (req, res) => {
+    try {
+      const userToken = req.cookies.podDeckUserToken;
+      const adminToken = req.cookies.podDeckAdminToken;
+  
+      if (userToken) {
+        const decodedUser = jwt.verify(userToken, process.env.JWT_SECRET);
+        return res.status(200).json({ message: true, isAdmin: false });
+      }
+  
+      if (adminToken) {
+        const decodedAdmin = jwt.verify(adminToken, process.env.JWT_SECRET);
+        return res.status(200).json({ message: true, isAdmin: true });
+      }
+  
+      // If no valid token is found
+      res.status(200).json({ message: false });
+    } catch (error) {
+      console.error("Error verifying token:", error);
+      res.status(401).json({ message: "Authentication failed", error: error.message });
     }
-    res.status(200).json({ message: false });
-});
+  });
 
 // route to fetch user details
 router.get("/user-details",authMiddleware, async(req,res)=>{

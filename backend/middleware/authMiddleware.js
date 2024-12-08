@@ -23,7 +23,7 @@ const authMiddleware = async (req, res, next) => {
 
 // Middleware to authenticate admin users
 const adminMiddleware = async (req, res, next) => {
-  const token = req.cookies.podDeckUserToken;
+  const token = req.cookies.podDeckAdminToken;
   try {
     if (token) {
       const decode = jwt.verify(token, process.env.JWT_SECRET);

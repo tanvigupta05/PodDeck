@@ -31,7 +31,7 @@ const Login = () => {
         }
       );
 
-      dispatch(authActions.login());
+      dispatch(authActions.login({ isAdmin: false, token: res.data.token }));
       navigate("/profile");
       console.log(res.data);
     } catch (error) {

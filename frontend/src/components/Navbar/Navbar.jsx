@@ -30,12 +30,12 @@ const Navbar = () => {
       <div className="flex items-center text-white justify-between">
         <div className="logo brand-name w-2/6 flex items-center gap-2">
           <img
-            src= {PodStar}
+            src={PodStar}
             alt="PodStar"
             className="h-12 transition-transform duration-100 hover:scale-110"
           />
           <Link to="/" className="text-3xl font-bold">
-          PodStar
+            PodStar
           </Link>
         </div>
         <div className="hidden w-2/6 lg:flex items-center justify-center text-xl">
@@ -64,6 +64,13 @@ const Navbar = () => {
                 className="ms-4 px-6 py-3 bg-black text-black bg-white border border-black font-semibold rounded-full"
               >
                 Signup
+              </Link>
+              {/* Admin Login Link */}
+              <Link
+                to="/admin/login" // The route you want to navigate to for admin login
+                className="ms-4 px-6 py-3 bg-gray-800 text-white border border-gray-600 font-semibold rounded-full"
+              >
+                Admin Login
               </Link>
             </>
           )}
