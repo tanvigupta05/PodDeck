@@ -31,8 +31,6 @@ const AdminLogin = () => {
     );
       console.log("Response:", res.data);
       if (res.data.message === "Admin sign-in successful") {
-        // On successful login, navigate to admin dashboard or any protected route
-        //localStorage.setItem("adminToken", res.data.token);
         dispatch(authActions.login({ isAdmin: true, token: res.data.token }));
         navigate("/admin-dashboard");
       }

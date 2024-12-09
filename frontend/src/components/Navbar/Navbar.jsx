@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import PodStar from "../../assets/podStar.png";
 
 const Navbar = () => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { isLoggedIn, isAdmin } = useSelector((state) => state.auth); // Access both `isLoggedIn` and `isAdmin`
   const [MobileNav, setMobileNav] = useState(false);
   const navLinks = [
     {
@@ -52,7 +52,6 @@ const Navbar = () => {
         <div className="hidden w-2/6 lg:flex items-center justify-end">
           {!isLoggedIn && (
             <>
-              {" "}
               <Link
                 to="/login"
                 className="px-6 py-3 border bg-white text-black border border-black font-semibold rounded-full"
@@ -67,14 +66,14 @@ const Navbar = () => {
               </Link>
               {/* Admin Login Link */}
               <Link
-                to="/admin/login" // The route you want to navigate to for admin login
+                to="/admin/login" // Admin login route
                 className="ms-4 px-6 py-3 bg-gray-800 text-white border border-gray-600 font-semibold rounded-full"
               >
                 Admin Login
               </Link>
             </>
           )}
-          {isLoggedIn && (
+          {isLoggedIn && !isAdmin && ( // Only show Profile if not Admin
             <Link
               to="/profile"
               className="ms-4 px-6 py-3 bg-black text-white rounded-full"
@@ -95,7 +94,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Nav  */}
+      {/* Mobile Nav */}
       <div
         className={`fixed top-0 left-0 w-full h-screen bg-blue-100 lg:hidden ${
           MobileNav ? "translate-y-0" : "translate-y-[-100%] hidden"
@@ -130,13 +129,15 @@ const Navbar = () => {
               </Link>
             </>
           ) : (
-            <Link
-              to="/profile"
-              className="mb-12 text-3xl hover:font-semibold transition-all duration-300"
-              onClick={closeMobileNav}
-            >
-              Profile
-            </Link>
+            !isAdmin && ( // Only show Profile in mobile view if not Admin
+              <Link
+                to="/profile"
+                className="mb-12 text-3xl hover:font-semibold transition-all duration-300"
+                onClick={closeMobileNav}
+              >
+                Profile
+              </Link>
+            )
           )}
         </div>
       </div>

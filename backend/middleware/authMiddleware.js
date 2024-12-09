@@ -4,9 +4,11 @@ const User = require("../models/user");
 // Middleware to authenticate any user
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies.podDeckUserToken;
+  console.log("User Token:", token);
   try {
     if (token) {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Decoded User:", decode);
       const user = await User.findById(decode.id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -17,6 +19,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: "No token provided, access denied" });
     }
   } catch (error) {
+    console.error("Auth Middleware Error:", error);
     res.status(500).json({ message: "Invalid Token" });
   }
 };

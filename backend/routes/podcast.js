@@ -6,10 +6,10 @@ const Podcast = require("../models/podcast");
 const router = require("express").Router();
 
 // Admin: Fetch all podcasts (with user details)
-router.get("/all-podcasts", authMiddleware, adminMiddleware, async (req, res) => {
+router.get("/all-podcasts", async (req, res) => {
   try {
     const podcasts = await Podcast.find()
-      .populate("category")
+      .populate("category","categoryName")
       .populate("user", "username email -_id")
       .sort({ createdAt: -1 });
 
@@ -20,7 +20,7 @@ router.get("/all-podcasts", authMiddleware, adminMiddleware, async (req, res) =>
 });
 
 // Admin: Delete any podcast
-router.delete("/admin-delete-podcast/:id", authMiddleware, adminMiddleware, async (req, res) => {
+router.delete("/admin-delete-podcast/:id", async (req, res) => {
   try {
     const podcastId = req.params.id;
 

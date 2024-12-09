@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { authActions } from "../store/auth";
@@ -11,9 +11,9 @@ const AdminDashboard = () => {
   const dispatch = useDispatch(); // Initialize dispatch
   const navigate = useNavigate(); // Initialize navigate
 
-  if (!isAdmin) {
+  /* if (!isAdmin) {
     return <Navigate to="/" />;
-  }
+  } */
 
   const handleLogout = async () => {
     try {
@@ -44,15 +44,12 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-zinc-900 text-white flex flex-col">
       {/* Profile Header */}
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-md">
-        {/* Logo / Title (Optional) */}
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-
-        {/* Right side (Profile + Logout button) */}
         <div className="flex items-center space-x-6">
           {/* Profile Icon */}
           <div className="relative">
             <img
-              src="https://www.w3schools.com/howto/img_avatar.png" // Use a dynamic avatar or default image
+              src="https://www.w3schools.com/howto/img_avatar.png"
               alt="Profile"
               className="w-10 h-10 rounded-full border-2 border-green-500"
             />
