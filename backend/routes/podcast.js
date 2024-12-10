@@ -245,4 +245,28 @@ router.put("/update-podcast/:id", async (req, res) => {
   }
 });
 
+//download podcast
+router.get("/download-podcast/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const podcast = await Podcast.findById(id);
+
+    if (!podcast) {
+      return res.status(404).json({ message: "Podcast not found" });
+    }
+
+    // Specify the path of the audio file
+    const audioPath = `./${podcast.audioFile}`;
+
+    // Send the file as a download
+    res.download(audioPath, (err) => {
+      if (err) {
+        res.status(500).json({ message: "Failed to download podcast", error: err });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch podcast", error });
+  }
+});
+
 module.exports = router;

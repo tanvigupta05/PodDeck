@@ -68,6 +68,23 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/api/v1/download-podcast/${items._id}`,
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${items.title}.mp3`); // Set the file name
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      toast.error("Failed to download podcast.");
+    }
+  };
+
   return (
     <div className="border p-4 bg-zinc-800 rounded flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 z-2">
       <Link
@@ -96,6 +113,14 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
             onClick={handleReport}
           >
             Report Podcast
+          </button>
+        </div>
+        <div>
+          <button
+            className="mt-4 bg-green-500 text-white px-4 py-2 rounded-full w-full hover:bg-green-600 transition-all duration-300"
+            onClick={handleDownload}
+          >
+            Download Podcast
           </button>
         </div>
         {!isFavorite && (
