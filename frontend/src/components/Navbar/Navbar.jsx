@@ -39,7 +39,8 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="hidden w-2/6 lg:flex items-center justify-center text-xl">
-          {navLinks.map((items, i) => (
+         {!isAdmin && 
+          navLinks.map((items, i) => (
             <Link
               key={i}
               to={items.path}
@@ -50,7 +51,7 @@ const Navbar = () => {
           ))}
         </div>
         <div className="hidden w-2/6 lg:flex items-center justify-end">
-          {!isLoggedIn && (
+          {!isLoggedIn &&  !isAdmin && (
             <>
               <Link
                 to="/login"

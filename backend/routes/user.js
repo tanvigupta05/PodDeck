@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 const {authMiddleware, adminMiddleware} = require("../middleware/authMiddleware");
 
 // Fetch all users (Admin only)
-router.get("/all-users", async (req, res) => {
+router.get("/all-users",  async (req, res) => {
     try {
-        console.log("Middleware passed. Fetching users...");  
+        //console.log("Middleware passed. Fetching users...");  
       const users = await User.find().select("-password");
       res.status(200).json({ data: users });
     } catch (error) {

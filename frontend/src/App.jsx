@@ -19,6 +19,7 @@ import DescriptionPage from './pages/DescriptionPage';
 import FavoritesPage from './pages/FavoritesPage';
 import AdminUsers from './pages/AdminUsers';
 import AdminPodcasts from './pages/AdminPodcasts';
+import ReportedPodcasts from './pages/ReportedPodcasts';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/favorites" element={<FavoritesPage/>}/>
             <Route path="/admin/users" element={<AdminUsers/>} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/reports" element={<ReportedPodcasts />} />
             <Route path="/admin/podcasts" element={<AdminPodcasts/>} />
           </Route>
           <Route path="/" element={<AuthLayout/>}>

@@ -55,6 +55,19 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
     }
   };
 
+  const handleReport = async () => {
+    try {
+      await axios.post(
+        `http://localhost:3000/api/v1/report-podcast/${items._id}`,
+        {},
+        { withCredentials: true }
+      );
+      toast.success("Podcast reported successfully!");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to report podcast.");
+    }
+  };
+
   return (
     <div className="border p-4 bg-zinc-800 rounded flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 z-2">
       <Link
@@ -76,6 +89,14 @@ const PodcastCard = ({ items, handleRemove, isFavorite, isAdmin }) => {
           <span className="text-sm font-medium">
             <h3>Genre: {items.category.categoryName}</h3>
           </span>
+        </div>
+        <div>
+          <button
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-full w-full hover:bg-red-600 transition-all duration-300"
+            onClick={handleReport}
+          >
+            Report Podcast
+          </button>
         </div>
         {!isFavorite && (
           <button
